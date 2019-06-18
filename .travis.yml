@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+# Build process
+before_install:
+  - docker build -t pferrervich/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run pferrervich/react-test npm test -- --coverage 
+
+after_success:
+  - docker build -t pferrervich/react-test/overly-client ./client
+  - docker build -t pferrervich/react-test/overly-nginx ./nginx
+  - docker build -t pferrervich/react-test/overly-server ./server
+  - docker build -t pferrervich/react-test/overly-worker ./worker
+  # Docker CLI login
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push the built images to Docker Hub
+  - docker push pferrervich/overly-client
+  - docker push pferrervich/overly-nginx
+  - docker push pferrervich/overly-server 
+  - docker push pferrervich/overly-worker
