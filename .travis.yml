@@ -9,10 +9,10 @@ script:
   - docker run -e CI=true pferrervich/react-test npm test -- --coverage 
 
 after_success:
-  - docker build -t pferrervich/react-test/overly-client ./client
-  - docker build -t pferrervich/react-test/overly-nginx ./nginx
-  - docker build -t pferrervich/react-test/overly-server ./server
-  - docker build -t pferrervich/react-test/overly-worker ./worker
+  - docker build -t pferrervich/overly-client ./client
+  - docker build -t pferrervich/overly-nginx ./nginx
+  - docker build -t pferrervich/overly-server ./server
+  - docker build -t pferrervich/overly-worker ./worker
   # Docker CLI login
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Push the built images to Docker Hub
